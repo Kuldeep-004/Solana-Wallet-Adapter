@@ -18,7 +18,7 @@ const Tokens = () => {
 
     const fetchTokens=async()=>{
 
-      const tokenAccount=await connection.getParsedToken(
+      const tokenAccount=await connection.getParsedTokenAccountsByOwner(
         wallet.publicKey,
         {programId:new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")},
       );
@@ -30,7 +30,7 @@ const Tokens = () => {
     };
     fetchTokens();
   },[wallet.connected,wallet.publicKey])
-
+  console.log(token);
   return (
     <div>
         <div>
@@ -41,16 +41,25 @@ const Tokens = () => {
                 return(
                   <div key={index} className='bg-gray-700 p-4 rounded-md'>
                     <div>
-                      Accociated Token Address:{val.pubkey}
+                      Mint Address : {val.account.data.parsed.info.mint}
                     </div>
                     <div>
-                      executable:{val.account.executable ? "YES" : "NO"}
+                      Accociated Token Address : {val.pubkey}
                     </div>
                     <div>
-                      Owner:{val.account.owner}
+                      executable : {val.account.executable ? "YES" : "NO"}
                     </div>
                     <div>
-                      Amount:{val.account.lamports}
+                      Mint Authority : {val.account.data.parsed.info.owner}
+                    </div>
+                    <div>
+                      Token Amount : {val.account.data.parsed.info.tokenAmount.uiAmount}
+                    </div>
+                    <div>
+                      Owner : {val.account.owner}
+                    </div>
+                    <div>
+                      Rent : {val.account.lamports}
                     </div>
                   </div>
                 )
